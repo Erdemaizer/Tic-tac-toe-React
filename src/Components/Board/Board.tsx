@@ -2,24 +2,25 @@ import Square from "../Square/Square";
 import "./Board.css";
 
 export type BoardProps = {
-  currentMark: string,
+  xIsNext: boolean,
   currentSquares: string[],
   onPlay: (nextSquares: string[]) => void;
 }
 
-export default function Board({currentMark, currentSquares, onPlay}: BoardProps) {
+export default function Board({xIsNext, currentSquares, onPlay}: BoardProps) {
+  const nextPlayer = xIsNext ? 'x' : 'o';
   const handleClick = (i : number) => {
     if(currentSquares[i] || calculateWinner(currentSquares)){
       return;
     }
 
     const newSquares = currentSquares.slice();
-    newSquares[i] = currentMark;
+    newSquares[i] = nextPlayer;
     onPlay(newSquares);
   }
   
   const winner = calculateWinner(currentSquares);
-  const status = winner ? `Status: ${winner}` : `Next player: ${currentMark}`;
+  const status = winner ? `${winner}` : `Next player: ${nextPlayer}`;
   return (
     <div className="board-container">
       <div>
@@ -59,7 +60,7 @@ function calculateWinner(squares: string[]) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return `The winner is: ` + squares[a];
+      return squares[a] + ` is a Winner`;
     }
   }
 

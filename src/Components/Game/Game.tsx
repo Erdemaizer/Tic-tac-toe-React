@@ -3,30 +3,19 @@ import Board from "../Board/Board";
 import './Game.css'
 
 export default function Game(){
-    const [currentMark, setCurrentMark] = useState('x');
     const [history, setHistory] = useState<string[][]>([Array(9).fill(null)]);
-    const [currentSquares, setCurrentSquares] = useState(history[history.length - 1]);
     const [currentMove, setCurrentMove] = useState(0);
+    const xIsNext = currentMove % 2 === 0;
+    const currentSquares = history[currentMove];
 
     function handlePlay(nextSquares : string[]) {
-        setHistory([...history.slice(0, currentMove + 1), nextSquares]);
-        setCurrentMove(history.length);
-        setCurrentSquares(nextSquares);
-        if(currentMark === 'o'){
-            setCurrentMark('x');
-        } else{
-            setCurrentMark('o')
-        }
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
     }
 
     function jumpTo(index: number){
         setCurrentMove(index); 
-        if(index % 2 === 0){
-            setCurrentMark('x');
-        } else{
-            setCurrentMark('o');
-        }
-        setCurrentSquares(history[index]);
     }
 
     const moves = history.map((squares, move) => {
@@ -47,7 +36,7 @@ export default function Game(){
     return(
         <div className="game">
             <div className="game-board">
-                <Board currentSquares={currentSquares} currentMark={currentMark} onPlay={handlePlay}/>
+                <Board currentSquares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay}/>
             </div>
             <div className="game-info">
                 {moves}
