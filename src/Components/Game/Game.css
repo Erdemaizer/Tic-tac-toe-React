@@ -1,0 +1,14 @@
+.game{
+    display: flex;
+    gap: 30px;
+}
+
+.game-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.game-move{
+    cursor: pointer;
+    display: inline-block;
+}
